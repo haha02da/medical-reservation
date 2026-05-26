@@ -103,9 +103,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(parsed);
   } catch (error) {
-    console.error('Chat route error:', error);
+    const msg = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+    console.error('Chat route error:', msg);
     return NextResponse.json(
-      { message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', action: 'none' },
+      { message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', action: 'none', _debug: msg },
       { status: 200 }
     );
   }
