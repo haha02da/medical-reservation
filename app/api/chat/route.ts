@@ -75,9 +75,10 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('OpenRouter error:', err);
+      const keyHint = `${apiKey.slice(0, 8)}...len=${apiKey.length}`;
+      console.error(`OpenRouter ${response.status} | key=${keyHint} | body=${err}`);
       return NextResponse.json(
-        { message: '죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', action: 'none' },
+        { message: '죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', action: 'none', _status: response.status, _err: err.slice(0, 200) },
         { status: 200 }
       );
     }
